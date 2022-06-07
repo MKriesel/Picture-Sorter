@@ -10,7 +10,7 @@ bg = (255,255,255)
 print(bg[0])
 window = pygame.display.set_mode((win_width, win_height))
 
-filename = "dio.jpg"
+filename = "ch.jpg"
 img = Image.open(filename)
 #img.show()
 width, height = img.size
@@ -20,9 +20,11 @@ for i in range(width):
 	for j in range(height):
 		pos.append((i,j))
 
+#convert to hsl
 def hsl(c):
 	return colorsys.rgb_to_hsv(c[0], c[1], c[2])
 
+#color checker function if wanting to do more indepth color comparision (makes it slower)
 def color_checker(c1,c2):
 	col1 = hsl(c1)
 	col2 = hsl(c2)
@@ -31,6 +33,7 @@ def color_checker(c1,c2):
 	else:
 		return False
 
+#displays the list
 def dis_list(window, rect, lst):
 	count = 0
 	for x in range(width):
@@ -39,23 +42,8 @@ def dis_list(window, rect, lst):
 			window.set_at((rect.left + i, rect.top + j), lst[count])
 			count+=1
 	pygame.display.update()
-	#pygame.time.delay(20)
 
-def sel_sort(lst,rect):
-	for i in range(len(lst)):
-		min_idx = i
-		for j in range(i+1, len(lst)):
-			if lst[min_idx] > lst[j]:
-				min_idx = j
-		#dis_list(window,rect,lst)
-		x,y = pos[i]
-		x2,y2 = pos[min_idx]
-		#pygame.event.pump()
-		#window.set_at((rect.left + x2, rect.top + y2), lst[i])
-		#window.set_at((rect.left + x, rect.top + y), lst[min_idx])
-		#pygame.display.update()
-		lst[i], lst[min_idx] = lst[min_idx], lst[i]
-
+#main mergesort alg
 def mergeSort(a, rect):
 	counter = 0
 	w = 1   
@@ -77,7 +65,7 @@ def merge(a, l, m, r, rect, counter):
 	L = [0] * n1
 	R = [0] * n2
 
-	pygame.event.pump() 
+	
 
 	for i in range(0, n1):
 		L[i] = a[l + i]
@@ -86,6 +74,7 @@ def merge(a, l, m, r, rect, counter):
 
 	i, j, k = 0, 0, l
 	while i < n1 and j < n2:
+		pygame.event.pump() 
 		if colorsys.rgb_to_hsv(L[i][0], L[i][1], L[i][2]) >= colorsys.rgb_to_hsv(R[j][0], R[j][1], R[j][2]):
 		#if L[i] >= R[j]:
 			a[k] = L[i]
@@ -111,6 +100,7 @@ def merge(a, l, m, r, rect, counter):
 		k += 1
 
 	while i < n1:
+		pygame.event.pump() 
 		a[k] = L[i]
 
 		x,y = pos[k]
@@ -119,11 +109,11 @@ def merge(a, l, m, r, rect, counter):
 		window.set_at((rect.left + x, rect.top + y), L[i])
 		pygame.display.update()
 		pygame.time.delay(1)
-
 		i += 1
 		k += 1
 
 	while j < n2:
+		pygame.event.pump() 
 		a[k] = R[j]
 
 		x,y = pos[k]
@@ -136,7 +126,7 @@ def merge(a, l, m, r, rect, counter):
 		j += 1
 		k += 1
 	
-	
+#bubble sort alg
 def bubble_sort(window, rect, lst):
 	print("h")
 	c = 0
@@ -148,15 +138,16 @@ def bubble_sort(window, rect, lst):
 				c+=1
 				x,y = pos[j]
 				x2,y2 = pos[j+1]
+				pygame.event.pump()
 				window.set_at((rect.left + x2, rect.top + y2), lst[j])
 				window.set_at((rect.left + x, rect.top + y), lst[j+1])
 				pygame.display.update()
-				#dis_list(window,rect,lst)
+				pygame.time.delay(1)
 				t = lst[j]
 				lst[j] = lst[j+1]
 				lst[j+1] = t
 
-
+#put pixels in list
 def get_pixels(width, height, lst):
 	lst = []
 	for i in range(width):
@@ -166,6 +157,7 @@ def get_pixels(width, height, lst):
 	print(len(lst))
 	return lst
 
+#main method
 def main():
 	run = True
 	clock = pygame.time.Clock()
@@ -200,9 +192,7 @@ def main():
 			elif event.key == pygame.K_j:
 				dis_list(window,rect,lst)
 			elif event.key == pygame.K_SPACE:
-				#lst.sort() #low key kinda cool
-				#sel_sort(lst,rect)
-				#countingSort(lst)
+				pygame.event.pump() 
 				mergeSort(lst, rect)
 				print("EHBWIEWHN")
 				pygame.display.update()
