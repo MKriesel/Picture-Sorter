@@ -2,6 +2,7 @@
 Python sort visualizer running pygame that sorts the pixels in an image using merge sort
 
 Takes any image and uses merge sort to sort the pixels of an image by the HSL value with a visualizer showing the transition.
+To use: run picture_sort.py and change filename to image (ch.jpg by default, smaller images work better), "space" starts visualizer, "k" sorts without visualizer
 
 ![before](https://user-images.githubusercontent.com/26195368/185802287-30ac6866-5154-4a3c-97c3-efcbe37a8980.PNG)
 
